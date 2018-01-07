@@ -17,3 +17,15 @@ def index(request):
       return render(request, "Qriousapp/index.html")
    else:
       return HttpResponseRedirect("accounts/login/")
+
+class LeaderboardView(generic.ListView):
+   model = CustUser
+   template_name = 'Qriousapp/leaderboard.html'
+   context_object_name = 'all_users'
+      
+   def get_queryset(self):
+      return CustUser.objects.all()
+
+def instructions_view(request):
+   return render(request, "Qriousapp/instructions.html")
+

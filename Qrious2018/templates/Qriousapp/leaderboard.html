@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <title>Leaderboard</title>
+</head>
+<body>
+   {% if user.is_authenticated %}
+      {% for user in all_users %}
+         {{user.username}} {{user.num_diamonds}}<br>
+      {% endfor %}
+   {% endif %}
+
+</body>
+</html>
