@@ -18,6 +18,7 @@ def index(request):
    else:
       return HttpResponseRedirect("accounts/login/")
 
+
 class LeaderboardView(generic.ListView):
    model = CustUser
    template_name = 'Qriousapp/leaderboard.html'
@@ -26,6 +27,10 @@ class LeaderboardView(generic.ListView):
    def get_queryset(self):
       return CustUser.objects.all()
 
+
 def instructions_view(request):
-   return render(request, "Qriousapp/instructions.html")
+   if request.user.is_authenticated():
+      return render(request, "Qriousapp/instructions.html")
+   else:
+      return HttpResponseRedirect("accounts/login/")
 
