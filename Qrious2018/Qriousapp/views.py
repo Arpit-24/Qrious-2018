@@ -11,12 +11,13 @@ from django.core.urlresolvers import reverse_lazy
 from django.contrib import auth
 from django.contrib.auth.models import User
 
-
+@login_required(redirect_field_name='if_auth')
 def index(request):
-   if request.user.is_authenticated():
-      return render(request, "Qriousapp/index.html")
-   else:
-      return HttpResponseRedirect("accounts/login/")
+   """if request.user.is_authenticated():"""
+   return render(request, "Qriousapp/index.html")
+   """else:
+               return HttpResponseRedirect("accounts/login/")"""
+# the decorator performs the same function as the code in the doc_string
 
 
 class LeaderboardView(generic.ListView):
@@ -28,9 +29,8 @@ class LeaderboardView(generic.ListView):
       return CustUser.objects.all()
 
 
+@login_required(redirect_field_name='if_auth')
 def instructions_view(request):
-   if request.user.is_authenticated():
-      return render(request, "Qriousapp/instructions.html")
-   else:
-      return HttpResponseRedirect("accounts/login/")
-
+   
+   return render(request, "Qriousapp/instructions.html")
+   
