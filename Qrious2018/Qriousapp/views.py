@@ -33,4 +33,11 @@ class LeaderboardView(generic.ListView):
 def instructions_view(request):
    
    return render(request, "Qriousapp/instructions.html")
+
+
+@login_required(redirect_field_name='if_auth')
+def login_view(request):
+   
+   return render(request, "Qriousapp/login.html")
+   
    
