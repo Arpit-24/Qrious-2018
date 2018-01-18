@@ -16,10 +16,10 @@ def index(request):
    """if request.user.is_authenticated():"""
    return render(request, "Qriousapp/index.html")
    """else:
-               return HttpResponseRedirect("accounts/login/")"""
+         return HttpResponseRedirect("accounts/login/")"""
 # the decorator performs the same function as the code in the doc_string
 
-
+"""
 class LeaderboardView(generic.ListView):
    model = CustUser
    template_name = 'Qriousapp/leaderboard.html'
@@ -28,6 +28,12 @@ class LeaderboardView(generic.ListView):
    def get_queryset(self):
       return CustUser.objects.all()
 
+"""
+@login_required(redirect_field_name='if_auth')
+def leaderboard_view(request):
+
+   return render(request, "Qriousapp/leaderboard.html")
+
 
 @login_required(redirect_field_name='if_auth')
 def instructions_view(request):
@@ -35,7 +41,7 @@ def instructions_view(request):
    return render(request, "Qriousapp/instructions.html")
 
 
-# @login_required(redirect_field_name='if_auth')
+# frontend design login
 def login_view(request):
    
    return render(request, "Qriousapp/login.html")

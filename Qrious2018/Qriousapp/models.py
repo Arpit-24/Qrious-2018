@@ -11,24 +11,22 @@ class CustUser(AbstractUser):
 
 
    # emerald stuff
-   is_emer_red = models.BooleanField(default=False)
-   is_emer_blue = models.BooleanField(default=False)
-   is_emer_green = models.BooleanField(default=False)
-   is_emer_yellow = models.BooleanField(default=False)
+   """is_emer_red = models.BooleanField(default=False)
+            is_emer_blue = models.BooleanField(default=False)
+            is_emer_green = models.BooleanField(default=False)
+            is_emer_yellow = models.BooleanField(default=False)"""
    
    num_emers = models.IntegerField(default=0)
    # score = # formula
 
    def __str__(self):
-      return str(self.username) #+ "-" # + str(self.score)
+      return str(self.username) + "-" + str(self.num_diamonds)
 
 
 class Level(models.Model):
    lev_num = models.IntegerField(default=1)
-   is_emer_red = models.BooleanField(default=False)
-   is_emer_blue = models.BooleanField(default=False)
-   is_emer_green = models.BooleanField(default=False)
-   is_emer_yellow = models.BooleanField(default=False)
+   is_emerald = models.BooleanField(default=False)
+  
    
    def __str__(self):
       return str(self.lev_num)
