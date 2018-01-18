@@ -77,10 +77,11 @@ SOCIALACCOUNT_PROVIDERS = { 'google':
                             }
                           }
 
+LOGIN_URL = '/login'
 
 LOGIN_REDIRECT_URL = '/'
 
-LOGOUT_REDIRECT_URL ='accounts/login/'
+LOGOUT_REDIRECT_URL ='/login'
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
