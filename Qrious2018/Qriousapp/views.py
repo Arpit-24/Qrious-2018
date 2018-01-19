@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login     # verifies login
 from django.views.generic import View
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.core.urlresolvers import reverse_lazy
 from django.contrib import auth
 from django.contrib.auth.models import User
@@ -31,13 +31,27 @@ class LeaderboardView(generic.ListView):
 """
 @login_required(redirect_field_name='if_auth')
 def leaderboard_view(request):
+   data = []
+   leaderboard = CustUser.objects.order_by('num_diamonds').reverse()
+   for user in leaderboard:
 
-   return render(request, "Qriousapp/leaderboard.html")
+      user_details = {}
+      user_details["details"] = {"name": user.username,
+                                 "diamonds": user.num_diamonds,
+                                 "emeralds": user.num_emers}
+
+
+      data.append(user_details)
+ 
+   # data = [{"details":{"name": ,"diamonds": , "emeralds": }}, {}, {}]
+   return JsonResponse(data, safe=False)
 
 
 @login_required(redirect_field_name='if_auth')
 def instructions_view(request):
    
+   
+
    return render(request, "Qriousapp/instructions.html")
 
 

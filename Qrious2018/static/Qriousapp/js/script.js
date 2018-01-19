@@ -25,7 +25,7 @@ function getLeaderboard() {
     document.getElementsByClassName("points")[i].innerHTML = 'Loading...';
   }
   var xhttp = new XMLHttpRequest();
-  xhttp.open("GET", "https://api.myjson.com/bins/bsza7", true);
+  xhttp.open("GET", "http://127.0.0.1:8000/leaderboard", true);
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       var myObj = JSON.parse(this.responseText);

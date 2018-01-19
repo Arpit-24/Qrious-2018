@@ -23,10 +23,14 @@
           <a data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
         </ul>
         <a class="brand-logo center">Qrious</a>
+
         <ul id="nav-mobile" class="right hide-on-med-and-down">
           <li><a class="modal-trigger" href="#instructions"><i class="material-icons left">help</i>Instructions</a></li>
+
           <li><a class="modal-trigger" href="#leaderboard" onclick="getLeaderboard();"><i class="material-icons left">insert_chart</i>Leaderboard</a></li>
+
           <li><a id="diamonds"><img src="{% static 'Qriousapp/icons/diamond.svg' %}" id="diamonds-icon"><span id="diamonds-text">0</span></a></li>
+
           <li><a href="/accounts/logout"><i class="material-icons left">exit_to_app</i>Logout</a></li>
         </ul>
       </div>

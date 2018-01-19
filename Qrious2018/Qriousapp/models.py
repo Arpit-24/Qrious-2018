@@ -33,6 +33,7 @@ class Problem(models.Model):
    prob_num_diam = models.IntegerField(default=50)
    prob_hint = models.CharField(max_length=1000)
    prob_help = models.CharField(max_length=1000)
+   prob_diff = models.CharField(max_length=1000)
 
    def __str__(self):
       return str(self.prob_num)
