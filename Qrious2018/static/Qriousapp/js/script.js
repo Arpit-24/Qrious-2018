@@ -13,10 +13,13 @@ $(window).on('load', function() {
   }
 });
 
+// ----------------------------------------------------------------------------------
 function goFullScreen() {
   document.body.webkitRequestFullscreen();
 }
 
+// ----------------------------------------------------------------------------------
+// DONE-----------------  
 function getLeaderboard() {
   Materialize.toast('Fetching Leaderboard!', 3000);
   for (var i = 0; i < 10; i++) {
@@ -43,6 +46,8 @@ function getLeaderboard() {
   xhttp.send("");
 }
 
+// ----------------------------------------------------------------------------------
+// LEFT---
 function getQues(level, difficulty) {
   Materialize.toast('Fetching Question!', 3000);
   document.getElementById("jumbleAnsOptions").innerHTML = "";
@@ -92,6 +97,8 @@ function getQues(level, difficulty) {
   xhttp.send(sendData);
 }
 
+// ----------------------------------------------------------------------------------
+// LEFT---
 function getHint(level, difficulty) {
   Materialize.toast('Fetching Hint!', 3000);
   if (level != 3 && level != 4 && level != 9) {
@@ -108,6 +115,7 @@ function getHint(level, difficulty) {
     "level": level,
     "difficulty": difficulty
   };
+
   var sendData = JSON.stringify(backend);
   var xhttp = new XMLHttpRequest(); //Used to exchange data with a web server behind scenes
   xhttp.open("GET", "https://api.myjson.com/bins/1fsprp", true); // It gets the data from the server
@@ -149,6 +157,8 @@ function getHint(level, difficulty) {
   xhttp.send(sendData);
 }
 
+// ----------------------------------------------------------------------------------
+// LEFT---
 function submitAns(level, difficulty) {
   var answer;
   if (level != 3 && level != 4 && level != 9) {
@@ -206,6 +216,8 @@ function submitAns(level, difficulty) {
 }
 var level_no = 1;
 
+// ----------------------------------------------------------------------------------
+// DONE###----------
 function getLevel() {
   Materialize.toast('Initializing Game!', 3000);
   var xhttp = new XMLHttpRequest();
@@ -237,6 +249,8 @@ function getLevel() {
   }
   xhttp.send("");
 }
+
+// ----------------------------------------------------------------------------------
 
 function openQuesDiv(lev_no, lev_type) {
   if (lev_no != 9 && document.getElementsByClassName('question-difficulty')[lev_type].getAttribute('class') == 'question-open-btns question-difficulty') {
@@ -272,6 +286,8 @@ function openQuesDiv(lev_no, lev_type) {
   }
 }
 
+// ----------------------------------------------------------------------------------
+
 function forfeit(lev_no, lev_type) {
   forfeitQues(lev_no, lev_type);
   if (lev_no != 3 && lev_no != 4 && lev_no != 9) {
@@ -290,6 +306,8 @@ function forfeit(lev_no, lev_type) {
   dispExtra();
 }
 
+// ----------------------------------------------------------------------------------
+// LEFT---
 function forfeitQues(level, difficulty) {
   var backend = {
     "level": level,
@@ -315,6 +333,8 @@ function forfeitQues(level, difficulty) {
   xhttp.send(sendData);
 }
 
+// ----------------------------------------------------------------------------------
+
 function goNext() {
   openCurtain();
   if (level_no != 9) {
@@ -325,6 +345,8 @@ function goNext() {
     setTimeout('displayGameOver()', 1000);
   }
 }
+
+// ----------------------------------------------------------------------------------
 
 function nextLevel() {
   resetButtons();
@@ -346,6 +368,8 @@ function nextLevel() {
   }
 }
 
+// ----------------------------------------------------------------------------------
+// LEFT---
 function sendLevel(level) {
   var backend = {
     "level": level
@@ -479,6 +503,8 @@ function displayGameOver() {
   setTimeout('document.getElementById("game-over-wrapper").style.opacity = "1"',100);
 }
 
+// ----------------------------------------------------------------------------------
+// LEFT---
 function skipUsingEmeralds(level, difficulty) {
   Materialize.toast('Skipping Question!', 3000);
   var backend = {

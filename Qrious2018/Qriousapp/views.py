@@ -10,6 +10,7 @@ from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.core.urlresolvers import reverse_lazy
 from django.contrib import auth
 from django.contrib.auth.models import User
+import json
 
 @login_required(redirect_field_name='if_auth')
 def index(request):
@@ -19,16 +20,7 @@ def index(request):
          return HttpResponseRedirect("accounts/login/")"""
 # the decorator performs the same function as the code in the doc_string
 
-"""
-class LeaderboardView(generic.ListView):
-   model = CustUser
-   template_name = 'Qriousapp/leaderboard.html'
-   context_object_name = 'all_users'
-      
-   def get_queryset(self):
-      return CustUser.objects.all()
 
-"""
 @login_required(redirect_field_name='if_auth')
 def leaderboard_view(request):
    data = []
@@ -59,5 +51,80 @@ def instructions_view(request):
 def login_view(request):
    
    return render(request, "Qriousapp/login.html")
+
+
+
+"""@login_required(redirect_field_name='if_auth')
+def get_problem(request):
+   # data = [{"question":{"jumble":"","ques":""}}]
+
+   data = []
+   level = """
+
+
+@login_required(redirect_field_name='if_auth')
+def get_level_view(request):
+   # data = [{"level": ,"forfeited":[0,1],"successful":[2],"openQues":3}] 
    
+   data = []
+   data_dict = {}
+   usr = request.user
+   data_dict["level"] = usr.lev_num
+   data_dict["forfeited"] = usr.forfeited_ques_list
+   data_dict["successful"] = usr.success_ques_list
+   data_dict["openQues"] = usr.current_ques
+
+   data.append(data_dict)
+
+
+   return JsonResponse(data, safe=False)
+
+@login_required(redirect_field_name='if_auth')
+def get_hint_view(request):
+   data = []
+   data_dict = {}
+
+   list_ = 0
+
+          
+   backend = json.loads(request.body)
    
+   # list_ = backend.getlist(backend)
+
+   usr = request.user
+   """backend = {
+             "level": level,
+             "difficulty": difficulty
+           }"""
+
+   ques = list(Problem.objects.filter(level=1, prob_diff=0).values())
+
+   # [{"hint":"This is ..","success":0}]
+   
+   # data_dict["hint"] = ques[0]["prob_hint"]
+   data_dict["success"] = 1
+
+   data.append(data_dict)
+   """try:
+               data.append(data_dict)
+               return JsonResponse(data, safe=False)
+         
+            except Exception:
+               return JsonResponse("you")"""
+
+   """def insert_tc(request):
+    if request.method == 'POST':       
+    ret = request.POST
+    type = ret['type']
+    list = ret.getlist(ret)"""
+
+   return JsonResponse(backend, safe=False)
+
+
+
+
+
+
+
+
+

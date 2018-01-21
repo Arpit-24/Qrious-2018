@@ -10,6 +10,9 @@ urlpatterns = [
    url(r'^instructions$', views.instructions_view, name="instructions_view"),
 
    url(r'^login$', views.login_view, name="login_view"),
+
+   url(r'^getlevel$', views.get_level_view, name="get_level_view"),
    
+   url(r'^gethint$', views.get_hint_view, name="get_hint_view"),
 ]
 
