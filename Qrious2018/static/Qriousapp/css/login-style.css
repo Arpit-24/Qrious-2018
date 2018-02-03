@@ -1,0 +1,120 @@
+body {
+  background-color: #440044;
+  -webkit-animation-name: bits;
+  -webkit-animation-duration: 4s;
+  animation-name: bits;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+  margin: 0;
+}
+ @font-face {
+                      font-family: 'sedgwick';
+
+                      src: url(Sedgwick.ttf) format('truetype');
+                    }
+
+#content-wrapper {
+  width: 100vw;
+  text-align: center;
+}
+
+.btn {
+  display: inline-block;
+  border: 3px solid white;
+  text-decoration: none;
+  padding: 2vh 3vw;
+  font-size: 3.5vh;
+  width: 18vw;
+  background-color: transparent;
+  outline: none;
+  border-radius: 5%;
+  margin-top: 19vh;
+  box-shadow: 0px 9px #999;
+  opacity: 1.0;
+  color: white;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #808000;
+}
+
+.btn:active {
+  background-color: #808000;
+  box-shadow: 0px 5px #666;
+  transform: translateY(4px);
+}
+
+@media only screen and (max-width: 768px) {
+  .btn {
+    width: 80vw;
+    padding: 3vh 3vw;
+  }
+}
+
+@-webkit-keyframes bits {
+  0% {
+    background-color: #8d54aa;
+  }
+  
+  50% {
+    background-color: #ebb6b6;
+  }
+  
+  100% {
+    background-color: #8d54aa;
+  }
+}
+
+@keyframes bits {
+  0% {
+    background-color: #8d54aa;
+  }
+ 
+  50% {
+    background-color: #ebb6b6;
+  }
+  
+  100% {
+    background-color: #8d54aa;
+  }
+}
+
+div h1 {
+  color: #66ffcc;
+  text-align: center;
+  font-size: 10vh;
+  margin-top: 18vh;
+  -webkit-animation-name: head;
+  animation-name: head;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+}
+
+@-webkit-keyframes head {
+  0% {
+    color: #ebb6b6;
+  }
+  
+  50% {
+    color: #5d3771;
+  }
+  
+  100% {
+    color: #ebb6b6;
+  }
+}
+
+@keyframes head {
+  0% {
+    color: #ebb6b6;
+  }
+  
+  50% {
+    color: #8d54aa;
+  }
+  
+  100% {
+    color: #ebb6b6;
+  }
+}

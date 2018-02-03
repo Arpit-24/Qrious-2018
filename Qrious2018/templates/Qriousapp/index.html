@@ -1,8 +1,287 @@
-<h1> HI You are logged into this site</h1>
+<!DOCTYPE html>
 
-<h3> Your username is {{user.username}}</h3>
+<html>
 
-<h3> It's worth mentioning that you have {{user.num_diamonds}} diamonds
-</h3>
 
-<a href="accounts/logout" > logout </a>
+   {% load static %}
+  <head>
+    <title>Qrious</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'Qriousapp/css/font.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'Qriousapp/css/materialize.min.css' %}">
+
+    <script type="text/javascript" src="{% static 'Qriousapp/js/jquery.js' %}"></script>
+    <script type="text/javascript" src="{% static 'Qriousapp/js/materialize.min.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'Qriousapp/css/style.css' %}">
+    <script type="text/javascript" src="{% static 'Qriousapp/js/script.js' %}"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="mobile-web-app-capable" content="yes">
+  </head>
+  <body>
+    <nav>
+      <div class="nav-wrapper" id="nav-wrap">
+        <ul class="left">
+          <a data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+        </ul>
+        <a class="brand-logo center">Qrious</a>
+
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li><a class="modal-trigger" href="#instructions"><i class="material-icons left">help</i>Instructions</a></li>
+
+          <li><a class="modal-trigger" href="#leaderboard" onclick="getLeaderboard();"><i class="material-icons left">insert_chart</i>Leaderboard</a></li>
+
+          <li><a id="diamonds"><img src="{% static 'Qriousapp/icons/diamond.svg' %}" id="diamonds-icon"><span id="diamonds-text">0</span></a></li>
+
+          <li><a href="/accounts/logout"><i class="material-icons left">exit_to_app</i>Logout</a></li>
+        </ul>
+      </div>
+    </nav>
+    <ul id="slide-out" class="side-nav">
+      <li><a class="modal-trigger" href="#instructions"><i class="material-icons left">help</i>Instructions</a></li>
+      <li><a class="modal-trigger" href="#leaderboard" onclick="getLeaderboard();"><i class="material-icons left">insert_chart</i>Leaderboard</a></li>
+      <li><a id="diamonds-sidebar"><img src="{% static 'Qriousapp/icons/diamond.svg' %}" id="diamonds-icon-sidebar"><span id="diamonds-text-sidebar">0</span></a></li>
+      <li><a href="/accounts/logout"><i class="material-icons left">exit_to_app</i>Logout</a></li>
+      <li><a onclick="goFullScreen()"><i class="material-icons left">fullscreen</i>Fullscreen</a></li>
+    </ul>
+    <div id="pre-loader">
+      <div class="group">
+        <div class="blobs">
+          <div class="blob-center"></div>
+          <div class="blob"></div>
+          <div class="blob"></div>
+          <div class="blob"></div>
+          <div class="blob"></div>
+          <div class="blob"></div>
+          <div class="blob"></div>
+        </div>
+        <div class="text">Loading</div>
+      </div>
+    </div>
+    <div id="robot-animate-div">
+      <div>
+        <img src="{% static 'Qriousapp/icons/robot.svg' %}" id="image">
+      </div>
+    </div>
+    <div id="storyline-complete-wrapper">
+      <div id="storyline-wrapper">
+        <div id="storyline">
+          <span class="storyline-corner-one"></span>
+          <span class="storyline-corner-two"></span>
+          <div class="storyline-inner">
+            <div id="close_story_sec" onclick="closeStoryline()">SKIP</div>
+            <button id="move_next1" onclick="para2()">NEXT</button>
+            <button id="move_next2" onclick="para3()">NEXT</button>
+            <div id="story-content-wrapper">
+              <div class="story-paras" id="para1">
+                <p id="text1">
+                  You , the ROOTER have been sentenced to life-time
+                  imprisonment for infiltrating the US government
+                  and selling classified data to the Russians...
+                </p>
+              </div>
+              <div class="story-paras" id="para2">
+                <p id="text2">
+                  The leader of Mafia dealing in Artificial Intelligence 
+                  weapons wants you to help in his dirty work.
+                  In return, he gives you freedom from prison and money.
+                  The mafia easily hacks the high security prison and
+                  takes control of the AI robots...
+                </p>
+              </div>
+              <div class="story-paras" id="para3">
+                <p id="text3">
+                  At the same time , the mafia leader wants to test your intelligence 
+                  and so he only helps you slightly through the robots.
+                  The robots , which are under the control of mafia help you
+                  on your journey , giving you help and hints in exchange 
+                  for diamonds.You get through the doors only when you solve 
+                  certain puzzles...
+                  <br><br>
+                  TRY TO FIND YOUR WAY IF YOU CAN!!!
+                  <br><br>
+                  GOOD LUCK...
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="main-sec">
+      <!-- Modal Structure -->
+      <div id="leaderboard" class="modal modal-fixed-footer">
+        <div class="modal-content">
+          <table>
+            <caption>LeaderBoard</caption>
+            <tr>
+              <th>Rank</th>
+              <th>Name</th>
+              <th>Points</th>
+            </tr>
+            <tr>
+              <td class="rank">1</td>
+              <td class="name">Random</td>
+              <td class="points">10000</td>
+            </tr>
+            <tr>
+              <td class="rank">2</td>
+              <td class="name">Hello</td>
+              <td class="points">8000</td>
+            </tr>
+            <tr>
+              <td class="rank">3</td>
+              <td class="name">New Name</td>
+              <td class="points">7000</td>
+            </tr>
+            <tr>
+              <td class="rank">4</td>
+              <td class="name">Random Name</td>
+              <td class="points">6500</td>
+            </tr>
+            <tr>
+              <td class="rank">Loading...</td>
+              <td class="name">Loading...</td>
+              <td class="points">Loading...</td>
+            </tr>
+            <tr>
+              <td class="rank">Loading...</td>
+              <td class="name">Loading...</td>
+              <td class="points">Loading...</td>
+            </tr>
+            <tr>
+              <td class="rank">Loading...</td>
+              <td class="name">Loading...</td>
+              <td class="points">Loading...</td>
+            </tr>
+            <tr>
+              <td class="rank">Loading...</td>
+              <td class="name">Loading...</td>
+              <td class="points">Loading...</td>
+            </tr>
+            <tr>
+              <td class="rank">Loading...</td>
+              <td class="name">Loading...</td>
+              <td class="points">Loading...</td>
+            </tr>
+            <tr>
+              <td class="rank">Loading...</td>
+              <td class="name">Loading...</td>
+              <td class="points">Loading...</td>
+            </tr>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <a class="modal-action modal-close waves-effect waves-green btn-flat ">Close</a>
+        </div>
+      </div>
+      <div id="instructions" class="modal modal-fixed-footer">
+        <div class="modal-content" id="instructions-content">
+          <h4>Instructions</h4>
+          <p>Write Instructions Here. Bunch of Text which no one generally reads. Keep Writing here.</p>
+        </div>
+        <div class="modal-footer">
+          <a class="modal-action modal-close waves-effect waves-green btn-flat ">Close</a>
+        </div>
+      </div>
+    </div>
+    <div id="prison-svgs">
+      <img src="{% static 'Qriousapp/icons/prisoner.svg' %}" id="background-svg">
+    </div>
+    <div id="custom-overlay"></div>
+    <div id="question-select-wrapper" class="center">
+      <div id="buttons-wrapper">
+        <div id="level-text">Level <span id="lev-no-text">1</span></div>
+        <a class="question-open-btns question-difficulty" onclick="openQuesDiv(1,0)">Easy</a>
+        <a class="question-open-btns question-difficulty" onclick="openQuesDiv(1,1)">Medium</a>
+        <a class="question-open-btns question-difficulty" onclick="openQuesDiv(1,2)">Hard</a>
+        <a class="question-open-btns question-difficulty" onclick="openQuesDiv(1,3)" id="bonus-ques-btn">Bonus</a>
+        <a class="question-open-btns" onclick="goNext()" id="next-lvl-btn">Next Level</a>
+      </div>
+    </div>
+    <div id="quesTemplate" class="question-div-wrapper center">
+      <!-- Basic Question Template -->
+      <div class="hint-wrapper">
+        <button class="hint-btn" onclick="getHint(1,0)">Hint</button>
+      </div>
+      <div class="forfeit-wrapper">
+        <button class="forfeit-btn" onclick="forfeit(1,0)">Forfeit</button>
+      </div>
+      <span class="question-text">This is the Question Text. Loads of Text Here. Even More Text Here.This is the Question Text. Loads of Text Here. Even More Text Here.This is the Question Text. Loads of Text Here. Even More Text Here.This is the Question Text. Loads of Text Here. Even More Text Here.This is the Question Text. Loads of Text Here. Even More Text Here.</span>
+      <span class="hint-text">Hint: Hint Text Here</span>
+      <!--Answer Field-->
+      <form>
+        <input  placeholder="Type your answer..." type="text" name="textAns" id="quesans"/>
+      </form>
+      <!--submit button-->
+      <button class="submit-ans-btn" onclick="submitAns(1,0)">Submit</button>
+    </div>
+    <div id="quesJumble" class="question-div-wrapper center">
+      <!-- Jumble Word Question Template -->
+      <div class="hint-wrapper">
+        <button class="hint-btn" onclick="getHint(1,0)">Hint</button>
+      </div>
+      <div class="forfeit-wrapper">
+        <button class="forfeit-btn" onclick="forfeit(1,0)">Forfeit</button>
+      </div>
+      <span class="question-text">This is the Question Text. Loads of Text Here. Even More Text Here.This is the Question Text. Loads of Text Here. Even More Text Here.This is the Question Text. Loads of Text Here. Even More Text Here.This is the Question Text. Loads of Text Here. Even More Text Here.This is the Question Text. Loads of Text Here. Even More Text Here.</span>
+      <span class="hint-text">Hint: Hint Text Here</span>
+      <!--Answer Field and Clear Button-->
+      <form>
+        <input placeholder="Click on the Buttons to Enter Answer" type="text" name="jumbleAns" id="append" readonly="readonly">
+      </form>
+      <div id="clear-wrapper">
+        <button class="clear-btn" onclick="clearText()">Clear</button>
+      </div>
+      <div id="jumbleAnsOptions" class="center">
+        <!-- Jumble Options Here -->
+      </div>
+      <button class="submit-ans-btn" onclick="submitAns(1,0)">Submit</button>
+    </div>
+    <div id="curtain-wrapper">
+      <img src="static/icons/curtain.jpg" id="curtain">
+    </div>
+    <div id="game-over-wrapper" class="center">
+      GAME OVER!
+    </div>
+    <div id="load-all-images">
+      <img src="{% static 'Qriousapp/icons/curtain.jpg' %}">
+      <img src="{% static 'Qriousapp/icons/diamond.svg' %}">
+      <img src="{% static 'Qriousapp/icons/door.svg' %}">
+      <img src="{% static 'Qriousapp/icons/prisoner.svg' %}">
+      <img src="{% static 'Qriousapp/icons/robot.svg' %}">
+      <img src="{% static 'Qriousapp/icons/loading_icon.gif' %}">
+    </div>
+    <div id="fullscreen" class="modal modal-fixed-footer">
+      <div class="modal-content center" id="fullscreen-content">
+        <h4>Full Screen</h4>
+        <p>Please Click to Allow Full Screen. The Site is best viewed in fullscreen. You can toggle fullscreen any time using the Side Naviagtion Bar</p>
+        <p>Use add to Home Screen in your Browser to Check out our Web App</p>
+        <a class="modal-action modal-close waves-effect waves-green btn" onclick="goFullScreen()">Full Screen</a>
+      </div>
+    </div>
+    <div id="lev9-select-wrapper" class="center">
+      <div id="lev9-buttons-wrapper">
+        <div id="level9-text">Level <span id="lev9-no-text">9</span></div>
+        <a class="question-open-btns question-difficulty" onclick="openQuesDiv(9,0)">Open</a>
+        <a class="question-open-btns" onclick="goNext()" id="next-lvl-btn">Next Level</a>
+      </div>
+    </div>
+    <div id="quesLev9" class="question-div-wrapper center">
+      <!-- Basic Question Template -->
+      <div class="hint-wrapper">
+        <button class="hint-btn" onclick="getHint(9,0)">Hint</button>
+      </div>
+      <div class="forfeit-wrapper">
+        <button class="forfeit-btn" onclick="forfeit(9,0)">Forfeit</button>
+      </div>
+      <span class="question-text">This is the Question Text. Loads of Text Here. Even More Text Here.This is the Question Text. Loads of Text Here. Even More Text Here.This is the Question Text. Loads of Text Here. Even More Text Here.This is the Question Text. Loads of Text Here. Even More Text Here.This is the Question Text. Loads of Text Here. Even More Text Here.</span>
+      <span class="hint-text">Hint: Hint Text Here</span>
+      <!--Answer Field-->
+      <form>
+        <input  placeholder="Type your answer..." type="text" name="textAns" id="lev9ans"/>
+      </form>
+      <!--submit button-->
+      <button class="submit-ans-btn" onclick="submitAns(9,0)">Submit</button>
+      <button class="submit-ans-btn" onclick="skipUsingEmeralds(9,0)">Skip Using Emeralds</button>
+    </div>
+  </body>
+</html>
