@@ -14,5 +14,7 @@ urlpatterns = [
    url(r'^getlevel$', views.get_level_view, name="get_level_view"),
    
    url(r'^gethint$', views.get_hint_view, name="get_hint_view"),
+
+   # url(r'^test$', views.test_json_data, name="get_json_data")
 ]
 

@@ -111,15 +111,19 @@ function getHint(level, difficulty) {
     document.getElementsByClassName('hint-text')[2].innerHTML = 'Hint: Loading...';
     document.getElementsByClassName('hint-text')[2].style.display = 'block';
   }
+
+  var csrf_token = getcookie('csrf_token');
   var backend = {
     "level": level,
-    "difficulty": difficulty
+    "difficulty": difficulty,
+    "csrfmiddlewaretoken": csrf_token,
   };
 
   var sendData = JSON.stringify(backend);
   var xhttp = new XMLHttpRequest(); //Used to exchange data with a web server behind scenes
-  xhttp.open("GET", "https://api.myjson.com/bins/1fsprp", true); // It gets the data from the server
+  xhttp.open("GET", "http://127.0.0.1:8000/gethint", true); // It gets the data from the server
   xhttp.setRequestHeader("Content-type", "application/json");
+  xhttp.setRequestHeader("X-CSRFToken", csrf_token);
   xhttp.onreadystatechange = function() {
     /*
      * 0:Hasn't started
@@ -140,7 +144,7 @@ function getHint(level, difficulty) {
           document.getElementsByClassName('hint-text')[2].innerHTML = "Hint: " + myObj[0].hint;
         }
       }
-      else {
+      else { 
         Materialize.toast('Insufficient Diamonds to fetch Hint!', 3000);
         if (level != 3 && level != 4 && level != 9) {
           document.getElementsByClassName('hint-text')[0].style.display = 'none';
@@ -154,6 +158,7 @@ function getHint(level, difficulty) {
       Materialize.toast('Failed to Connect to Server!', 3000);
     }
   }
+  console.log(sendData) // shows sent data in console of inspect element
   xhttp.send(sendData);
 }
 
@@ -221,7 +226,7 @@ var level_no = 1;
 function getLevel() {
   Materialize.toast('Initializing Game!', 3000);
   var xhttp = new XMLHttpRequest();
-  xhttp.open("GET", "https://api.myjson.com/bins/hqp49", true);
+  xhttp.open("GET", "http://127.0.0.1:8000/getlevel", true);
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       var myObj = JSON.parse(this.responseText);

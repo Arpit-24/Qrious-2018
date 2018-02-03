@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from django.views import generic
 from .models import CustUser, Problem, Level
 from django.views.generic.edit import CreateView, UpdateView
@@ -11,6 +12,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.contrib import auth
 from django.contrib.auth.models import User
 import json
+
 
 @login_required(redirect_field_name='if_auth')
 def index(request):
@@ -79,47 +81,45 @@ def get_level_view(request):
 
    return JsonResponse(data, safe=False)
 
+
 @login_required(redirect_field_name='if_auth')
 def get_hint_view(request):
    data = []
    data_dict = {}
+           
+   # data_get = request.GET.get['difficulty']
+   data_get = json.loads(request.body.decode('utf-8'))
 
-   list_ = 0
-
-          
-   backend = json.loads(request.body)
-   
-   # list_ = backend.getlist(backend)
-
-   usr = request.user
+   # dif_get = data_get
    """backend = {
              "level": level,
              "difficulty": difficulty
            }"""
 
-   ques = list(Problem.objects.filter(level=1, prob_diff=0).values())
+   ques = Problem.objects.get(level=1, prob_diff=0)
 
-   # [{"hint":"This is ..","success":0}]
+   # [{"hint":"This is ..","success":0}] -- send format
    
-   # data_dict["hint"] = ques[0]["prob_hint"]
+   data_dict["hint"] = ques.prob_hint
    data_dict["success"] = 1
 
    data.append(data_dict)
-   """try:
-               data.append(data_dict)
-               return JsonResponse(data, safe=False)
-         
-            except Exception:
-               return JsonResponse("you")"""
 
-   """def insert_tc(request):
-    if request.method == 'POST':       
-    ret = request.POST
-    type = ret['type']
-    list = ret.getlist(ret)"""
+   print(data_dict)
+   return HttpResponse(json.dumps(data_get['difficulty']))
 
-   return JsonResponse(backend, safe=False)
 
+
+
+"""@login_required(redirect_field_name='if_auth')
+def get_json_data(request):
+   pass
+
+
+
+
+   return render(HttpResponse, 'test.html', package) 
+"""
 
 
 
