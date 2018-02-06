@@ -89,13 +89,15 @@ def get_hint_view(request):
            
    # data_get = request.GET.get['difficulty']
    data_get = json.loads(request.body.decode('utf-8'))
-
+   print(data_get)
    # dif_get = data_get
    """backend = {
              "level": level,
              "difficulty": difficulty
            }"""
+   user = request.user
 
+   user.save()
    ques = Problem.objects.get(level=1, prob_diff=0)
 
    # [{"hint":"This is ..","success":0}] -- send format
@@ -106,25 +108,5 @@ def get_hint_view(request):
    data.append(data_dict)
 
    print(data_dict)
-   return HttpResponse(json.dumps(data_get['difficulty']))
-
-
-
-
-"""@login_required(redirect_field_name='if_auth')
-def get_json_data(request):
-   pass
-
-
-
-
-   return render(HttpResponse, 'test.html', package) 
-"""
-
-
-
-
-
-
-
+   return HttpResponse(json.dumps(data_dict))
 

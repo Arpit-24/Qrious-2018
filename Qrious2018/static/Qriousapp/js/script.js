@@ -1,5 +1,5 @@
 $('document').ready(function() {
-  getLevel();
+  //getLevel();
 });
 
 $(window).on('load', function() {
@@ -117,7 +117,7 @@ function getHint(level, difficulty) {
     document.getElementsByClassName('hint-text')[2].style.display = 'block';
   }
 
-  var csrf_token = getcookie('csrf_token');
+  var csrf_token = getcookie('csrftoken');
   var backend = {
     "level": level,
     "difficulty": difficulty,
@@ -126,9 +126,10 @@ function getHint(level, difficulty) {
 
   var sendData = JSON.stringify(backend);
   var xhttp = new XMLHttpRequest(); //Used to exchange data with a web server behind scenes
-  xhttp.open("GET", "http://127.0.0.1:8000/gethint", true); // It gets the data from the server
+  xhttp.open("POST", "/gethint/", true); // It gets the data from the server
   xhttp.setRequestHeader("Content-type", "application/json");
   xhttp.setRequestHeader("X-CSRFToken", csrf_token);
+  alert('Hi');
   xhttp.onreadystatechange = function() {
     /*
      * 0:Hasn't started
@@ -138,15 +139,16 @@ function getHint(level, difficulty) {
      * 4:Request finished and response is ready */
     if (this.readyState == 4 && this.status == 200) {
       var myObj = JSON.parse(this.responseText);
+      console.log(myObj)
       /* JSON.parse()converts the data received from server which is in string form to javascript form .
 		   ResponseText returns the response data as string*/
-      if (myObj[0].success == 1) {
+      if (myObj.success == 1) {
         if (level != 3 && level != 4 && level != 9) {
-          document.getElementsByClassName('hint-text')[0].innerHTML = "Hint: " + myObj[0].hint;
+          document.getElementsByClassName('hint-text')[0].innerHTML = "Hint: " + myObj.hint;
         } else if (level == 3 || level == 4) {
-          document.getElementsByClassName('hint-text')[1].innerHTML = "Hint: " + myObj[0].hint;
+          document.getElementsByClassName('hint-text')[1].innerHTML = "Hint: " + myObj.hint;
         } else if (level == 9) {
-          document.getElementsByClassName('hint-text')[2].innerHTML = "Hint: " + myObj[0].hint;
+          document.getElementsByClassName('hint-text')[2].innerHTML = "Hint: " + myObj.hint;
         }
       }
       else { 
@@ -163,7 +165,7 @@ function getHint(level, difficulty) {
       Materialize.toast('Failed to Connect to Server!', 3000);
     }
   }
-  console.log(sendData) // shows sent data in console of inspect element
+   // shows sent data in console of inspect element
   xhttp.send(sendData);
 }
 
@@ -231,7 +233,9 @@ var level_no = 1;
 function getLevel() {
   Materialize.toast('Initializing Game!', 3000);
   var xhttp = new XMLHttpRequest();
-  xhttp.open("GET", "http://127.0.0.1:8000/getlevel", true);
+  var csrf_token = getcookie('csrf_token');
+  xhttp.open("GET", "/getlevel/", true);
+  xhttp.setRequestHeader("X-CSRFToken", csrf_token);
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       var myObj = JSON.parse(this.responseText);
