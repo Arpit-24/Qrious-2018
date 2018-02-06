@@ -18,6 +18,11 @@ function goFullScreen() {
   document.body.webkitRequestFullscreen();
 }
 
+function getcookie(name)
+{
+  var v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+  return v ? v[2] : null;
+}
 // ----------------------------------------------------------------------------------
 // DONE-----------------  
 function getLeaderboard() {
