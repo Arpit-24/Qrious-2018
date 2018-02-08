@@ -96,7 +96,7 @@ def get_hint_view(request):
              "difficulty": difficulty
            }"""
    user = request.user
-
+   
    user.save()
    ques = Problem.objects.get(level=1, prob_diff=0)
 
