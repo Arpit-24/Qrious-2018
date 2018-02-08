@@ -52,7 +52,7 @@ function getLeaderboard() {
 }
 
 // ----------------------------------------------------------------------------------
-// LEFT---
+// DONE---
 function getQues(level, difficulty) {
   Materialize.toast('Fetching Question!', 3000);
   document.getElementById("jumbleAnsOptions").innerHTML = "";
@@ -63,14 +63,18 @@ function getQues(level, difficulty) {
   } else if (level == 9) {
     document.getElementsByClassName('question-text')[2].innerHTML = 'Loading...';
   }
+
+  var csrf_token = getcookie('csrftoken');
   var backend = {
     "level": level,
-    "difficulty": difficulty
+    "difficulty": difficulty,
+    "csrfmiddlewaretoken": csrf_token,
   };
   var sendData = JSON.stringify(backend);
   var xhttp = new XMLHttpRequest(); //Used to exchange data with a web server behind scenes
-  xhttp.open("GET", "https://api.myjson.com/bins/jl53d", true); // It gets the data from the server
+  xhttp.open("POST", "/getques/", true); // It gets the data from the server
   xhttp.setRequestHeader("Content-type", "application/json");
+  xhttp.setRequestHeader("X-CSRFToken", csrf_token);
   xhttp.onreadystatechange = function() {
     /*
      * 0:Hasn't started
@@ -103,7 +107,7 @@ function getQues(level, difficulty) {
 }
 
 // ----------------------------------------------------------------------------------
-// LEFT---
+// DONE---
 function getHint(level, difficulty) {
   Materialize.toast('Fetching Hint!', 3000);
   if (level != 3 && level != 4 && level != 9) {
@@ -129,7 +133,7 @@ function getHint(level, difficulty) {
   xhttp.open("POST", "/gethint/", true); // It gets the data from the server
   xhttp.setRequestHeader("Content-type", "application/json");
   xhttp.setRequestHeader("X-CSRFToken", csrf_token);
-  alert('Hi');
+  // alert('Hi');
   xhttp.onreadystatechange = function() {
     /*
      * 0:Hasn't started
@@ -142,14 +146,15 @@ function getHint(level, difficulty) {
       console.log(myObj)
       /* JSON.parse()converts the data received from server which is in string form to javascript form .
 		   ResponseText returns the response data as string*/
-      if (myObj.success == 1) {
+      if (myObj[0].success == 1) {
         if (level != 3 && level != 4 && level != 9) {
-          document.getElementsByClassName('hint-text')[0].innerHTML = "Hint: " + myObj.hint;
+          document.getElementsByClassName('hint-text')[0].innerHTML = "Hint: " + myObj[0].hint;
         } else if (level == 3 || level == 4) {
-          document.getElementsByClassName('hint-text')[1].innerHTML = "Hint: " + myObj.hint;
+          document.getElementsByClassName('hint-text')[1].innerHTML = "Hint: " + myObj[0].hint;
         } else if (level == 9) {
-          document.getElementsByClassName('hint-text')[2].innerHTML = "Hint: " + myObj.hint;
+          document.getElementsByClassName('hint-text')[2].innerHTML = "Hint: " + myObj[0].hint;
         }
+        
       }
       else { 
         Materialize.toast('Insufficient Diamonds to fetch Hint!', 3000);

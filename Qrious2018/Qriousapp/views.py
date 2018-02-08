@@ -87,26 +87,55 @@ def get_hint_view(request):
    data = []
    data_dict = {}
            
-   # data_get = request.GET.get['difficulty']
+   
    data_get = json.loads(request.body.decode('utf-8'))
-   print(data_get)
-   # dif_get = data_get
+   
+   
    """backend = {
              "level": level,
              "difficulty": difficulty
            }"""
-   user = request.user
+   #user = request.user
    
-   user.save()
-   ques = Problem.objects.get(level=1, prob_diff=0)
+   # user.save()
+   ques = Problem.objects.get(level=data_get['level'], prob_diff=data_get['difficulty'])
 
    # [{"hint":"This is ..","success":0}] -- send format
-   
    data_dict["hint"] = ques.prob_hint
    data_dict["success"] = 1
 
    data.append(data_dict)
 
-   print(data_dict)
-   return HttpResponse(json.dumps(data_dict))
+   
+   return HttpResponse(json.dumps(data))
+
+
+@login_required(redirect_field_name='if_auth')
+def get_ques_view(request):
+   data = []
+   data_dict = {}
+           
+   """var backend = {
+             "level": level,
+             "difficulty": difficulty,
+             "csrfmiddlewaretoken": csrf_token,
+           };
+   """
+   
+   data_get = json.loads(request.body.decode('utf-8'))
+   print(data_get)
+   
+   # [{"question":{"jumble":"HelloAJAX","ques":"This is .."}}]
+   
+   # user.save()
+   ques = Problem.objects.get(level=data_get['level'], prob_diff=data_get['difficulty'])
+
+   
+   data_dict["question"] = {"jumble": "HelloAJAX", "ques": ques.prob_ques}
+   
+
+   data.append(data_dict)
+
+   
+   return HttpResponse(json.dumps(data))
 

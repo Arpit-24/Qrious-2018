@@ -15,6 +15,6 @@ urlpatterns = [
    
    url(r'^gethint/$', views.get_hint_view, name="get_hint_view"),
 
-   # url(r'^test$', views.test_json_data, name="get_json_data")
+   url(r'^getques/$', views.get_ques_view, name="get_ques_view")
 ]
 
