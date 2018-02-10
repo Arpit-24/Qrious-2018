@@ -17,7 +17,9 @@ import json
 @login_required(redirect_field_name='if_auth')
 def index(request):
    """if request.user.is_authenticated():"""
+
    return render(request, "Qriousapp/index.html")
+
    """else:
          return HttpResponseRedirect("accounts/login/")"""
 # the decorator performs the same function as the code in the doc_string
@@ -26,6 +28,7 @@ def index(request):
 @login_required(redirect_field_name='if_auth')
 def leaderboard_view(request):
    data = []
+
    leaderboard = CustUser.objects.order_by('num_diamonds').reverse()
    for user in leaderboard:
 
@@ -38,15 +41,9 @@ def leaderboard_view(request):
       data.append(user_details)
  
    # data = [{"details":{"name": ,"diamonds": , "emeralds": }}, {}, {}]
+
    return JsonResponse(data, safe=False)
 
-
-@login_required(redirect_field_name='if_auth')
-def instructions_view(request):
-   
-   
-
-   return render(request, "Qriousapp/instructions.html")
 
 
 # frontend design login
@@ -56,23 +53,19 @@ def login_view(request):
 
 
 
-"""@login_required(redirect_field_name='if_auth')
-def get_problem(request):
-   # data = [{"question":{"jumble":"","ques":""}}]
-
-   data = []
-   level = """
-
-
 @login_required(redirect_field_name='if_auth')
 def get_level_view(request):
    # data = [{"level": ,"forfeited":[0,1],"successful":[2],"openQues":3}] 
    
    data = []
    data_dict = {}
+
    usr = request.user
+
+
    data_dict["level"] = usr.lev_num
    data_dict["forfeited"] = usr.forfeited_ques_list
+
    data_dict["successful"] = usr.success_ques_list
    data_dict["openQues"] = usr.current_ques
 
@@ -187,7 +180,7 @@ def send_level_view(request):
 
    data_get = json.loads(request.body.decode('utf-8'))
 
-    """var backend = {                       --recieve format
+   """var backend = {                       --recieve format
                 "level": level,
                 };
             """ 
@@ -206,7 +199,53 @@ def forfeit_question_view(request):
              "difficulty": difficulty
            };"""
 
-   
+   pass
+
+
+
+@login_required(redirect_field_name='if_auth')
+def emerald_ques_skip_view(request):
+
+   data = []
+
+   data_dict = {"hint": "", "success": 0}
+
+   """var backend = {
+             "level": level, -- recieve format
+             "difficulty": difficulty
+           };"""
+
+   # [{"hint":"This is a ..","success":0}] -- send format
+
+   data_get = json.loads(request.body.decode('utf-8'))
+
+   usr = request.user
+
+   if usr.num_emers == 4:
+
+      ques = Problem.objects.get(level=data_get['level'], prob_diff=data_get['difficulty'])
+
+      data_get['hint'] = ques.prob_hint
+      data_dict['success'] = 1;
+
+
+   data.append(data_dict)
+
+   return HttpResponse(json.dumps(data))
+
+
+
+
+      
+
+
+
+
+
+
+
+
+
 
 
 
