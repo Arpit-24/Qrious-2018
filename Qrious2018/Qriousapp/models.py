@@ -40,6 +40,7 @@ class Problem(models.Model):
    prob_ques = models.CharField(max_length=1000, null=True) 
    prob_is_pass = models.IntegerField(default=0)
    prob_is_forfeit = models.IntegerField(default=0)
+   
 
 
    def __str__(self):

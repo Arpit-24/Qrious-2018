@@ -122,20 +122,94 @@ def get_ques_view(request):
            };
    """
    
-   data_get = json.loads(request.body.decode('utf-8'))
-   print(data_get)
+   data_get = json.loads(request.body.decode('utf-8')) 
    
-   # [{"question":{"jumble":"HelloAJAX","ques":"This is .."}}]
+   # [{"question":{"jumble":"HelloAJAX","ques":"This is .."}}] --send format
    
    # user.save()
    ques = Problem.objects.get(level=data_get['level'], prob_diff=data_get['difficulty'])
 
-   
    data_dict["question"] = {"jumble": "HelloAJAX", "ques": ques.prob_ques}
    
-
    data.append(data_dict)
 
-   
    return HttpResponse(json.dumps(data))
 
+
+@login_required(redirect_field_name='if_auth')
+def submit_answer_view(request):
+
+   usr = request.user
+   points_dict = {"0": 150, "1": 200, "2": 250}
+
+   data = []
+   data_dict = {"success": 0}
+           
+   # recieve format
+   """var backend = {
+             "answer": answer,
+             "level": level,
+             "difficulty": difficulty,
+             "csrfmiddlewaretoken": csrf_token,
+           };
+   """
+   
+   # [{"success":1,"points":150,"tot_points":1500}] -- send format
+
+
+   data_get = json.loads(request.body.decode('utf-8'))
+   
+
+   ques = Problem.objects.get(level=data_get['level'], prob_diff=data_get['difficulty'])
+
+   
+
+   if data_get['answer'] == ques.answer:
+      data_dict['success'] = 1
+
+      data_dict['points'] = points_dict[str(ques.prob_diff)]
+      usr.num_diamonds += points_dict[str(ques.prob_diff)]
+      usr.lev_num += 1
+
+      usr.save()
+
+      data_dict['tot_points'] = usr.num_diamonds
+
+   
+   data.append(data_dict)
+
+   return HttpResponse(json.dumps(data))
+
+
+
+@login_required(redirect_field_name='if_auth')
+def send_level_view(request):
+
+   data_get = json.loads(request.body.decode('utf-8'))
+
+    """var backend = {                       --recieve format
+                "level": level,
+                };
+            """ 
+   
+   usr = request.user
+
+   usr.lev_num = data_get["level"]
+
+   usr.save()
+
+
+@login_required(redirect_field_name='if_auth')
+def forfeit_question_view(request):
+   """var backend = {
+             "level": level,
+             "difficulty": difficulty
+           };"""
+
+   
+
+
+
+
+
+   

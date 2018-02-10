@@ -15,6 +15,13 @@ urlpatterns = [
    
    url(r'^gethint/$', views.get_hint_view, name="get_hint_view"),
 
-   url(r'^getques/$', views.get_ques_view, name="get_ques_view")
+   url(r'^getques/$', views.get_ques_view, name="get_ques_view"),
+
+   url(r'^submit_answer/$', views.submit_answer_view, name="submit_answer_view"),
+
+   url(r'^send_level/$', views.send_level_view, name="send_level_view"),
+
+   url(r'^forfeit_question/$', views.forfeit_question_view, name="forfeit_question_view")
+
 ]
 

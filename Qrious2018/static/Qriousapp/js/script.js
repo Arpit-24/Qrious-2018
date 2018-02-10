@@ -175,7 +175,7 @@ function getHint(level, difficulty) {
 }
 
 // ----------------------------------------------------------------------------------
-// LEFT---
+// DONE --##  
 function submitAns(level, difficulty) {
   var answer;
   if (level != 3 && level != 4 && level != 9) {
@@ -186,18 +186,24 @@ function submitAns(level, difficulty) {
     answer = document.getElementById("lev9ans").value;
   }
   if (answer != '') {
+    var csrf_token = getcookie('csrftoken');
     var json_data = {
       "answer": answer,
       "level": level,
-      "difficulty": difficulty
+      "difficulty": difficulty,
+      "csrfmiddlewaretoken": csrf_token
     };
     var sendData = JSON.stringify(json_data);
     Materialize.toast('Submitting Answer', 3000);
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "https://api.myjson.com/bins/ijfx1", true);
+    xhttp.open("POST", "/submit_answer/", true); // It gets data from the server
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.setRequestHeader("X-CSRFToken", csrf_token);
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
+
         var myObj = JSON.parse(this.responseText);
+        console.log(myObj);
         // Fetch Backend Response Here
         if (myObj[0].success == 0) {
           Materialize.toast('Incorrect Answer! Please Try Again', 3000);
@@ -323,19 +329,23 @@ function forfeit(lev_no, lev_type) {
     initializeButtons('forfeit', 4);
   }
   dispExtra();
+  
 }
 
 // ----------------------------------------------------------------------------------
 // LEFT---
 function forfeitQues(level, difficulty) {
+
+  var csrf_token = getcookie('csrf_token');
   var backend = {
     "level": level,
     "difficulty": difficulty
   };
   var sendData = JSON.stringify(backend);
   var xhttp = new XMLHttpRequest(); //Used to exchange data with a web server behind scenes
-  xhttp.open("GET", "url", true); // It gets the data from the server
+  xhttp.open("POST", "/forfeit_question/", true); // It gets data from the server
   xhttp.setRequestHeader("Content-type", "application/json");
+  xhttp.setRequestHeader("X-CSRFToken", csrf_token);
   xhttp.onreadystatechange = function() {
     /*
      * 0:Hasn't started
@@ -390,9 +400,11 @@ function nextLevel() {
 // ----------------------------------------------------------------------------------
 // LEFT---
 function sendLevel(level) {
+
+
   var backend = {
-    "level": level
-  };
+    "level": level,
+    };
   var sendData = JSON.stringify(backend);
   var xhttp = new XMLHttpRequest(); //Used to exchange data with a web server behind scenes
   xhttp.open("GET", "url", true); // It gets the data from the server
