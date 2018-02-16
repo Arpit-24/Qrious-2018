@@ -13,6 +13,8 @@ from django.contrib.auth.models import User
 import json
 
 
+points_dict = {"0": 150, "1": 200, "2": 250}
+
 @login_required(redirect_field_name='if_auth')
 def index(request):
    """if request.user.is_authenticated():"""
@@ -78,14 +80,18 @@ def get_level_view(request):
 def get_hint_view(request):
    data = []
    data_dict = {}
-           
+
+   global points_dict
+
+   usr = request.user
+
    
    data_get = json.loads(request.body.decode('utf-8'))
    
    
    """backend = {
              "level": level,
-             "difficulty": difficulty
+             "difficulty": difficulty  -- recieve format
            }"""
    #user = request.user
    
@@ -94,10 +100,21 @@ def get_hint_view(request):
 
    # [{"hint":"This is ..","success":0}] -- send format
    data_dict["hint"] = ques.prob_hint
-   data_dict["success"] = 1
+
+   hint_attempt = False
+
+
+   if usr.num_diamonds >= 2 / 5 * points_dict[str(ques.level)] and hint_attempt = False: 
+
+      data_dict["success"] = 1
+      usr.num_diamonds -= 2 / 5 * points_dict[str(ques.level)]
+      hint_attempt = True
+
+      usr.save()
 
    data.append(data_dict)
 
+   usr
    
    return HttpResponse(json.dumps(data))
 
@@ -131,8 +148,9 @@ def get_ques_view(request):
 @login_required(redirect_field_name='if_auth')
 def submit_answer_view(request):
 
+   global points_dict
    usr = request.user
-   points_dict = {"0": 150, "1": 200, "2": 250}
+   
 
    data = []
    data_dict = {"success": 0}
@@ -240,6 +258,6 @@ def emerald_ques_skip_view(request):
 
 @login_required(redirect_field_name='if_auth')
 def logout_view(request):
-    logout(request)
+   logout(request)
 
-    return HttpResponseRedirect('/login/')
+   return HttpResponseRedirect('/login/')
