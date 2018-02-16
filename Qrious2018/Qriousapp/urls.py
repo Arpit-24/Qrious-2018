@@ -8,6 +8,8 @@ urlpatterns = [
 
    url(r'^login/$', views.login_view, name="login_view"),
 
+   url(r'^logout/$', views.logout_view, name="logout_view"),
+
    url(r'^leaderboard/$', views.leaderboard_view, name="leaderboard_view"),
 
    url(r'^getlevel/$', views.get_level_view, name="get_level_view"),

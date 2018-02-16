@@ -8,7 +8,6 @@ from django.views.generic import View
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
-from django.core.urlresolvers import reverse_lazy
 from django.contrib import auth
 from django.contrib.auth.models import User
 import json
@@ -238,3 +237,9 @@ def emerald_ques_skip_view(request):
 
    return HttpResponse(json.dumps(data))
 
+
+@login_required(redirect_field_name='if_auth')
+def logout_view(request):
+    logout(request)
+
+    return HttpResponseRedirect('/login/')
