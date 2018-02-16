@@ -1,5 +1,5 @@
 $('document').ready(function() {
-  //getLevel();
+  getLevel();
 });
 
 $(window).on('load', function() {
@@ -18,6 +18,8 @@ function goFullScreen() {
   document.body.webkitRequestFullscreen();
 }
 
+
+// using the post method requires getcookie(csrftoken)
 function getcookie(name)
 {
   var v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
@@ -341,6 +343,7 @@ function forfeitQues(level, difficulty) {
     "level": level,
     "difficulty": difficulty
   };
+
   var sendData = JSON.stringify(backend);
   var xhttp = new XMLHttpRequest(); //Used to exchange data with a web server behind scenes
   xhttp.open("POST", "/forfeit_question/", true); // It gets data from the server
@@ -407,7 +410,7 @@ function sendLevel(level) {
     };
   var sendData = JSON.stringify(backend);
   var xhttp = new XMLHttpRequest(); //Used to exchange data with a web server behind scenes
-  xhttp.open("GET", "url", true); // It gets the data from the server
+  xhttp.open("GET", "/send_level/", true); // It gets the data from the server
   xhttp.setRequestHeader("Content-type", "application/json");
   xhttp.onreadystatechange = function() {
     /*

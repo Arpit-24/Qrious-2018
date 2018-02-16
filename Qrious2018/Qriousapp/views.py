@@ -1,4 +1,4 @@
-from __future__ import unicode_literals
+from __future__ import unicode_literals # for using the json.loads(. . decode())
 from django.views import generic
 from .models import CustUser, Problem, Level
 from django.views.generic.edit import CreateView, UpdateView
@@ -64,9 +64,9 @@ def get_level_view(request):
 
 
    data_dict["level"] = usr.lev_num
-   data_dict["forfeited"] = usr.forfeited_ques_list
+   data_dict["forfeited"] = list(usr.forfeited_ques_list)
 
-   data_dict["successful"] = usr.success_ques_list
+   data_dict["successful"] = list(usr.success_ques_list)
    data_dict["openQues"] = usr.current_ques
 
    data.append(data_dict)
@@ -199,7 +199,12 @@ def forfeit_question_view(request):
              "difficulty": difficulty
            };"""
 
-   pass
+
+   usr = request.user
+   data_get = json.loads(request.body.decode('utf-8'))
+
+   usr.forfeited_ques_list.append(data_get['difficulty'])
+   usr.save()
 
 
 
@@ -233,22 +238,3 @@ def emerald_ques_skip_view(request):
 
    return HttpResponse(json.dumps(data))
 
-
-
-
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   
