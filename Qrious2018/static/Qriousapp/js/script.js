@@ -403,6 +403,20 @@ function nextLevel() {
   }
   if (level_no == 2) {
     document.getElementById('background-svg').src='/static/Qriousapp/icons/door.svg';
+  } else if (level_no == 3) {
+    document.getElementById('background-svg').src='/static/Qriousapp/icons/3.svg';
+  } else if (level_no == 4) {
+    document.getElementById('background-svg').src='/static/Qriousapp/icons/4.svg';
+  } else if (level_no == 5) {
+    document.getElementById('background-svg').src='/static/Qriousapp/icons/5.svg';
+  } else if (level_no == 6) {
+    document.getElementById('background-svg').src='/static/Qriousapp/icons/6.svg';
+  } else if (level_no == 7) {
+    document.getElementById('background-svg').src='/static/Qriousapp/icons/7.svg';
+  } else if (level_no == 8) {
+    document.getElementById('background-svg').src='/static/Qriousapp/icons/8.svg';
+  } else if (level_no == 9) {
+    document.getElementById('background-svg').src='/static/Qriousapp/icons/9.svg';
   }
 }
 
