@@ -13,7 +13,10 @@ from django.contrib.auth.models import User
 import json
 
 
+# shows the points based on the difficulty level of each question.
 points_dict = {"0": 150, "1": 200, "2": 250}
+hint_displayed = False
+
 
 @login_required(redirect_field_name='if_auth')
 def index(request):
@@ -81,7 +84,7 @@ def get_hint_view(request):
    data = []
    data_dict = {}
 
-   global points_dict
+   global points_dict, hint_displayed
 
    usr = request.user
 
@@ -100,22 +103,18 @@ def get_hint_view(request):
 
    # [{"hint":"This is ..","success":0}] -- send format
    data_dict["hint"] = ques.prob_hint
+   data_dict["success"] = 0
+   
 
-   hint_attempt = False
+   if usr.num_diamonds >= 2 / 5 * points_dict[str(ques.prob_diff)] and hint_displayed == False: 
 
-
-   if usr.num_diamonds >= 2 / 5 * points_dict[str(ques.level)] and hint_attempt = False: 
-
+      usr.num_diamonds -= 2 / 5 * points_dict[str(ques.prob_diff)]
+      hint_displayed = True
       data_dict["success"] = 1
-      usr.num_diamonds -= 2 / 5 * points_dict[str(ques.level)]
-      hint_attempt = True
-
       usr.save()
 
    data.append(data_dict)
-
-   usr
-   
+  
    return HttpResponse(json.dumps(data))
 
 
@@ -135,7 +134,6 @@ def get_ques_view(request):
    
    # [{"question":{"jumble":"HelloAJAX","ques":"This is .."}}] --send format
    
-   # user.save()
    ques = Problem.objects.get(level=data_get['level'], prob_diff=data_get['difficulty'])
 
    data_dict["question"] = {"jumble": "HelloAJAX", "ques": ques.prob_ques}

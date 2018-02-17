@@ -111,69 +111,75 @@ function getQues(level, difficulty) {
 // ----------------------------------------------------------------------------------
 // DONE---
 function getHint(level, difficulty) {
-  Materialize.toast('Fetching Hint!', 3000);
-  if (level != 3 && level != 4 && level != 9) {
-    document.getElementsByClassName('hint-text')[0].innerHTML = 'Hint: Loading...';
-    document.getElementsByClassName('hint-text')[0].style.display = 'block';
-  } else if (level == 3 || level == 4) {
-    document.getElementsByClassName('hint-text')[1].innerHTML = 'Hint: Loading...';
-    document.getElementsByClassName('hint-text')[1].style.display = 'block';
-  } else if (level == 9) {
-    document.getElementsByClassName('hint-text')[2].innerHTML = 'Hint: Loading...';
-    document.getElementsByClassName('hint-text')[2].style.display = 'block';
-  }
-
-  var csrf_token = getcookie('csrftoken');
-  var backend = {
-    "level": level,
-    "difficulty": difficulty,
-    "csrfmiddlewaretoken": csrf_token,
-  };
-
-  var sendData = JSON.stringify(backend);
-  var xhttp = new XMLHttpRequest(); //Used to exchange data with a web server behind scenes
-  xhttp.open("POST", "/gethint/", true); // It gets the data from the server
-  xhttp.setRequestHeader("Content-type", "application/json");
-  xhttp.setRequestHeader("X-CSRFToken", csrf_token);
-  // alert('Hi');
-  xhttp.onreadystatechange = function() {
-    /*
-     * 0:Hasn't started
-     * 1:Connected to the Server
-     * 2:Request received
-     * 3:processing request
-     * 4:Request finished and response is ready */
-    if (this.readyState == 4 && this.status == 200) {
-      var myObj = JSON.parse(this.responseText);
-      console.log(myObj)
-      /* JSON.parse()converts the data received from server which is in string form to javascript form .
-		   ResponseText returns the response data as string*/
-      if (myObj[0].success == 1) {
-        if (level != 3 && level != 4 && level != 9) {
-          document.getElementsByClassName('hint-text')[0].innerHTML = "Hint: " + myObj[0].hint;
-        } else if (level == 3 || level == 4) {
-          document.getElementsByClassName('hint-text')[1].innerHTML = "Hint: " + myObj[0].hint;
-        } else if (level == 9) {
-          document.getElementsByClassName('hint-text')[2].innerHTML = "Hint: " + myObj[0].hint;
-        }
-        
-      }
-      else { 
-        Materialize.toast('Insufficient Diamonds to fetch Hint!', 3000);
-        if (level != 3 && level != 4 && level != 9) {
-          document.getElementsByClassName('hint-text')[0].style.display = 'none';
-        } else if (level == 3 || level == 4) {
-          document.getElementsByClassName('hint-text')[1].style.display = 'none';
-        } else if (level == 9) {
-          document.getElementsByClassName('hint-text')[2].style.display = 'none';
-        }
-      }
-    } else if (this.readyState == 4 && this.status != 200) {
-      Materialize.toast('Failed to Connect to Server!', 3000);
+  if(document.getElementsByClassName('hint-text')[0].style.display == 'block' || document.getElementsByClassName('hint-text')[1].style.display == 'block' || document.getElementsByClassName('hint-text')[2].style.display == 'block') {
+    Materialize.toast('Hint Already Displayed!', 4000);
+  } else {
+    Materialize.toast('Fetching Hint!', 3000);
+    if (level != 3 && level != 4 && level != 9) {
+      document.getElementsByClassName('hint-text')[0].innerHTML = 'Hint: Loading...';
+      document.getElementsByClassName('hint-text')[0].style.display = 'block';
+    } else if (level == 3 || level == 4) {
+      document.getElementsByClassName('hint-text')[1].innerHTML = 'Hint: Loading...';
+      document.getElementsByClassName('hint-text')[1].style.display = 'block';
+    } else if (level == 9) {
+      document.getElementsByClassName('hint-text')[2].innerHTML = 'Hint: Loading...';
+      document.getElementsByClassName('hint-text')[2].style.display = 'block';
     }
+
+    var csrf_token = getcookie('csrftoken');
+    var backend = {
+      "level": level,
+      "difficulty": difficulty,
+      "csrfmiddlewaretoken": csrf_token,
+    };
+
+    var sendData = JSON.stringify(backend);
+    var xhttp = new XMLHttpRequest(); //Used to exchange data with a web server behind scenes
+    xhttp.open("POST", "/gethint/", true); // It gets the data from the server
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.setRequestHeader("X-CSRFToken", csrf_token);
+    // alert('Hi');
+    xhttp.onreadystatechange = function() {
+      /*
+       * 0:Hasn't started
+       * 1:Connected to the Server
+       * 2:Request received
+       * 3:processing request
+       * 4:Request finished and response is ready */
+      if (this.readyState == 4 && this.status == 200) {
+        var myObj = JSON.parse(this.responseText);
+        console.log(myObj)
+        /* JSON.parse()converts the data received from server which is in string form to javascript form .
+  		   ResponseText returns the response data as string*/
+        if (myObj[0].success == 1) {
+          document.getElementById('diamonds-text').innerHTML = myObj[0].tot_points;
+          document.getElementById('diamonds-text-sidebar').innerHTML = myObj[0].tot_points;
+          if (level != 3 && level != 4 && level != 9) {
+            document.getElementsByClassName('hint-text')[0].innerHTML = "Hint: " + myObj[0].hint;
+          } else if (level == 3 || level == 4) {
+            document.getElementsByClassName('hint-text')[1].innerHTML = "Hint: " + myObj[0].hint;
+          } else if (level == 9) {
+            document.getElementsByClassName('hint-text')[2].innerHTML = "Hint: " + myObj[0].hint;
+          }
+          
+        }
+        else { 
+          Materialize.toast('Insufficient Diamonds to fetch Hint!', 3000);
+          if (level != 3 && level != 4 && level != 9) {
+            document.getElementsByClassName('hint-text')[0].style.display = 'none';
+          } else if (level == 3 || level == 4) {
+            document.getElementsByClassName('hint-text')[1].style.display = 'none';
+          } else if (level == 9) {
+            document.getElementsByClassName('hint-text')[2].style.display = 'none';
+          }
+        }
+      } else if (this.readyState == 4 && this.status != 200) {
+        Materialize.toast('Failed to Connect to Server!', 3000);
+      }
+    }
+     // shows sent data in console of inspect element
+    xhttp.send(sendData);
   }
-   // shows sent data in console of inspect element
-  xhttp.send(sendData);
 }
 
 // ----------------------------------------------------------------------------------
@@ -335,7 +341,7 @@ function forfeit(lev_no, lev_type) {
 }
 
 // ----------------------------------------------------------------------------------
-// LEFT---
+// DONE##--
 function forfeitQues(level, difficulty) {
 
   var csrf_token = getcookie('csrf_token');
@@ -396,7 +402,7 @@ function nextLevel() {
     document.getElementsByClassName('question-difficulty')[i].setAttribute("onclick", "openQuesDiv(" + level_no + "," + i + ")");
   }
   if (level_no == 2) {
-    document.getElementById('background-svg').src='icons/door.svg';
+    document.getElementById('background-svg').src='/static/Qriousapp/icons/door.svg';
   }
 }
 
@@ -538,7 +544,7 @@ function displayGameOver() {
 }
 
 // ----------------------------------------------------------------------------------
-// LEFT---
+// DONE#---
 function skipUsingEmeralds(level, difficulty) {
   Materialize.toast('Skipping Question!', 3000);
   var backend = {
