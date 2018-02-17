@@ -31,7 +31,6 @@ class Level(models.Model):
 class Problem(models.Model):
    level = models.ForeignKey(Level, on_delete=models.CASCADE)
    answer = models.CharField(max_length=1000)
-   # prob_type = models.CharField(max_length=1000)
    prob_num_diam = models.IntegerField(default=50)
    prob_hint = models.CharField(max_length=1000, null=True)
    prob_help = models.CharField(max_length=1000, null=True)
