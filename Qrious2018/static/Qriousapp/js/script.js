@@ -335,7 +335,7 @@ function forfeit(lev_no, lev_type) {
 }
 
 // ----------------------------------------------------------------------------------
-// LEFT---
+// DONE##--
 function forfeitQues(level, difficulty) {
 
   var csrf_token = getcookie('csrf_token');
@@ -538,7 +538,7 @@ function displayGameOver() {
 }
 
 // ----------------------------------------------------------------------------------
-// LEFT---
+// DONE###---
 function skipUsingEmeralds(level, difficulty) {
   Materialize.toast('Skipping Question!', 3000);
   var backend = {
