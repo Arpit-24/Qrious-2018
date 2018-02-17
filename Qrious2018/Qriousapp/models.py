@@ -8,8 +8,8 @@ class CustUser(AbstractUser):
    rank = models.IntegerField(blank=True, null=True)
    lev_num = models.IntegerField(default=1)
    num_diamonds = models.IntegerField(default=100)
-   success_ques_list = models.CommaSeparatedIntegerField(max_length=100, default=[0])
-   forfeited_ques_list = models.CommaSeparatedIntegerField(max_length=100, default=[0])
+   success_ques_list = models.CharField(max_length=100, default=[0])
+   forfeited_ques_list = models.CharField(max_length=100, default=[0])
    current_ques = models.IntegerField(default = -1)
 
    num_emers = models.IntegerField(default=0)
@@ -40,6 +40,7 @@ class Problem(models.Model):
    prob_ques = models.CharField(max_length=1000, null=True) 
    prob_is_pass = models.IntegerField(default=0)
    prob_is_forfeit = models.IntegerField(default=0)
+   
 
 
    def __str__(self):
