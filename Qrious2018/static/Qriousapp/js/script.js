@@ -152,8 +152,8 @@ function getHint(level, difficulty) {
         /* JSON.parse()converts the data received from server which is in string form to javascript form .
   		   ResponseText returns the response data as string*/
         if (myObj[0].success == 1) {
-          document.getElementById('diamonds-text').innerHTML = myObj[0].tot_points;
-          document.getElementById('diamonds-text-sidebar').innerHTML = myObj[0].tot_points;
+          document.getElementById('diamonds-text').innerHTML = parseInt(document.getElementById('diamonds-text').innerHTML) - 100;
+          document.getElementById('diamonds-text-sidebar').innerHTML = parseInt(document.getElementById('diamonds-text-sidebar').innerHTML) - 100;
           if (level != 3 && level != 4 && level != 9) {
             document.getElementsByClassName('hint-text')[0].innerHTML = "Hint: " + myObj[0].hint;
           } else if (level == 3 || level == 4) {
