@@ -3,4 +3,4 @@ Repository for Qrious 2018 Event Conducted By Coding Club BITS Pilani, in associ
 
 ## Contents
 story_description.md--Story line and details  
-Qrious2018--backend of project
+Qrious2018--source code of project
