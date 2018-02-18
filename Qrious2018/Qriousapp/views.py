@@ -205,6 +205,7 @@ def send_level_view(request):
    usr.lev_num = data_get["level"]
 
    usr.save()
+   return HttpResponse("")
 
 
 @login_required(redirect_field_name='if_auth')

@@ -347,7 +347,8 @@ function forfeitQues(level, difficulty) {
   var csrf_token = getcookie('csrf_token');
   var backend = {
     "level": level,
-    "difficulty": difficulty
+    "difficulty": difficulty,
+    "csrfmiddlewaretoken": csrf_token
   };
 
   var sendData = JSON.stringify(backend);
@@ -424,14 +425,17 @@ function nextLevel() {
 // DONE##--
 function sendLevel(level) {
 
-
+  var csrf_token = getcookie('csrftoken');
   var backend = {
     "level": level,
+    "csrfmiddlewaretoken": csrf_token
     };
   var sendData = JSON.stringify(backend);
   var xhttp = new XMLHttpRequest(); //Used to exchange data with a web server behind scenes
-  xhttp.open("GET", "/send_level/", true); // It gets the data from the server
+  xhttp.open("POST", "/send_level/", true); // It gets data from the server
   xhttp.setRequestHeader("Content-type", "application/json");
+  xhttp.setRequestHeader("X-CSRFToken", csrf_token);
+  
   xhttp.onreadystatechange = function() {
     /*
      * 0:Hasn't started
@@ -440,11 +444,12 @@ function sendLevel(level) {
      * 3:processing request
      * 4:Request finished and response is ready */
     if (this.readyState == 4 && this.status == 200) {
-      // Do Nothing
+      Materialize.toast('Connected to Server to Update Game Status!', 3000);
     } else if (this.readyState == 4 && this.status != 200) {
       Materialize.toast('Failed to Connect to Server to Update Game Status!', 3000);
     }
   }
+
   xhttp.send(sendData);
 }
 
@@ -561,14 +566,18 @@ function displayGameOver() {
 // DONE#---
 function skipUsingEmeralds(level, difficulty) {
   Materialize.toast('Skipping Question!', 3000);
+  var csrf_token = getcookie('csrftoken');
   var backend = {
     "level": level,
-    "difficulty": difficulty
+    "difficulty": difficulty,
+    "csrfmiddlewaretoken": csrf_token
   };
   var sendData = JSON.stringify(backend);
   var xhttp = new XMLHttpRequest(); //Used to exchange data with a web server behind scenes
-  xhttp.open("GET", "https://api.myjson.com/bins/1fsprp", true); // It gets the data from the server
+  xhttp.open("POST", "/emerald_ques_skip/", true); // It gets data from the server
   xhttp.setRequestHeader("Content-type", "application/json");
+  xhttp.setRequestHeader("X-CSRFToken", csrf_token);
+  
   xhttp.onreadystatechange = function() {
     /*
      * 0:Hasn't started
