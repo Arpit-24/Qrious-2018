@@ -260,9 +260,11 @@ function getLevel() {
       var myObj = JSON.parse(this.responseText);
       level_no = myObj[0].level - 1;
       nextLevel();
+
       forfeited = myObj[0].forfeited;
-      for (var i = 0; i < forfeited.length; i++) {
-        initializeButtons('forfeit', forfeited[i]);
+      console.log(forfeited)
+      for (var i = 0; i < forfeited.length/2; i++) {
+        initializeButtons('forfeit', parseInt(forfeited[(2*i)+1]));
       }
       successful = myObj[0].successful;
       for (var i = 0; i < successful.length; i++) {
@@ -344,7 +346,7 @@ function forfeit(lev_no, lev_type) {
 // DONE##--
 function forfeitQues(level, difficulty) {
 
-  var csrf_token = getcookie('csrf_token');
+  var csrf_token = getcookie('csrftoken');
   var backend = {
     "level": level,
     "difficulty": difficulty,

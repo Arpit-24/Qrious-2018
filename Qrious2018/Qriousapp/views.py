@@ -74,6 +74,8 @@ def get_level_view(request):
    data_dict["openQues"] = usr.current_ques
 
    data.append(data_dict)
+   
+
 
 
    return JsonResponse(data, safe=False)
@@ -205,7 +207,9 @@ def send_level_view(request):
    usr.lev_num = data_get["level"]
 
    usr.save()
-   return HttpResponse("")
+
+   # gives error if nothing is returned
+   return HttpResponse("") 
 
 
 @login_required(redirect_field_name='if_auth')
@@ -219,8 +223,10 @@ def forfeit_question_view(request):
    usr = request.user
    data_get = json.loads(request.body.decode('utf-8'))
 
-   usr.forfeited_ques_list.append(data_get['difficulty'])
+   usr.forfeited_ques_list = usr.forfeited_ques_list[:-1] + "," + str(data_get['difficulty']) + "]"
    usr.save()
+
+   return HttpResponse("")
 
 
 
