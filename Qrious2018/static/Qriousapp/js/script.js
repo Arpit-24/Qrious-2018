@@ -152,8 +152,8 @@ function getHint(level, difficulty) {
         /* JSON.parse()converts the data received from server which is in string form to javascript form .
   		   ResponseText returns the response data as string*/
         if (myObj[0].success == 1) {
-          document.getElementById('diamonds-text').innerHTML = myObj[0].tot_points;
-          document.getElementById('diamonds-text-sidebar').innerHTML = myObj[0].tot_points;
+          document.getElementById('diamonds-text').innerHTML = parseInt(document.getElementById('diamonds-text').innerHTML) - 100;
+          document.getElementById('diamonds-text-sidebar').innerHTML = parseInt(document.getElementById('diamonds-text-sidebar').innerHTML) - 100;
           if (level != 3 && level != 4 && level != 9) {
             document.getElementsByClassName('hint-text')[0].innerHTML = "Hint: " + myObj[0].hint;
           } else if (level == 3 || level == 4) {
@@ -260,9 +260,11 @@ function getLevel() {
       var myObj = JSON.parse(this.responseText);
       level_no = myObj[0].level - 1;
       nextLevel();
+
       forfeited = myObj[0].forfeited;
-      for (var i = 0; i < forfeited.length; i++) {
-        initializeButtons('forfeit', forfeited[i]);
+      console.log(forfeited)
+      for (var i = 0; i < forfeited.length/2; i++) {
+        initializeButtons('forfeit', parseInt(forfeited[(2*i)+1]));
       }
       successful = myObj[0].successful;
       for (var i = 0; i < successful.length; i++) {
@@ -344,10 +346,11 @@ function forfeit(lev_no, lev_type) {
 // DONE##--
 function forfeitQues(level, difficulty) {
 
-  var csrf_token = getcookie('csrf_token');
+  var csrf_token = getcookie('csrftoken');
   var backend = {
     "level": level,
-    "difficulty": difficulty
+    "difficulty": difficulty,
+    "csrfmiddlewaretoken": csrf_token
   };
 
   var sendData = JSON.stringify(backend);
@@ -424,14 +427,17 @@ function nextLevel() {
 // DONE##--
 function sendLevel(level) {
 
-
+  var csrf_token = getcookie('csrftoken');
   var backend = {
     "level": level,
+    "csrfmiddlewaretoken": csrf_token
     };
   var sendData = JSON.stringify(backend);
   var xhttp = new XMLHttpRequest(); //Used to exchange data with a web server behind scenes
-  xhttp.open("GET", "/send_level/", true); // It gets the data from the server
+  xhttp.open("POST", "/send_level/", true); // It gets data from the server
   xhttp.setRequestHeader("Content-type", "application/json");
+  xhttp.setRequestHeader("X-CSRFToken", csrf_token);
+  
   xhttp.onreadystatechange = function() {
     /*
      * 0:Hasn't started
@@ -440,11 +446,12 @@ function sendLevel(level) {
      * 3:processing request
      * 4:Request finished and response is ready */
     if (this.readyState == 4 && this.status == 200) {
-      // Do Nothing
+      Materialize.toast('Connected to Server to Update Game Status!', 3000);
     } else if (this.readyState == 4 && this.status != 200) {
       Materialize.toast('Failed to Connect to Server to Update Game Status!', 3000);
     }
   }
+
   xhttp.send(sendData);
 }
 
@@ -561,14 +568,18 @@ function displayGameOver() {
 // DONE#---
 function skipUsingEmeralds(level, difficulty) {
   Materialize.toast('Skipping Question!', 3000);
+  var csrf_token = getcookie('csrftoken');
   var backend = {
     "level": level,
-    "difficulty": difficulty
+    "difficulty": difficulty,
+    "csrfmiddlewaretoken": csrf_token
   };
   var sendData = JSON.stringify(backend);
   var xhttp = new XMLHttpRequest(); //Used to exchange data with a web server behind scenes
-  xhttp.open("GET", "https://api.myjson.com/bins/1fsprp", true); // It gets the data from the server
+  xhttp.open("POST", "/emerald_ques_skip/", true); // It gets data from the server
   xhttp.setRequestHeader("Content-type", "application/json");
+  xhttp.setRequestHeader("X-CSRFToken", csrf_token);
+  
   xhttp.onreadystatechange = function() {
     /*
      * 0:Hasn't started
